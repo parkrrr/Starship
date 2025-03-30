@@ -667,7 +667,18 @@ void PlayerShot_ApplyDamageToActor(PlayerShot* shot, Actor* actor, s32 hitIndex)
     actor->dmgPart = hitIndex - 1;
     actor->timer_0C2 = 2;
     actor->damage = 10;
-    if ((shot->sourceId < 4) && (gPlayer[shot->sourceId].form != FORM_LANDMASTER)) {
+
+    if (!gVersusMode && gLaserStrength[0] == LASERS_MAX && shot->sourceId > NPC_SHOT_ID &&
+        shot->sourceId <= NPC_SHOT_ID + AI360_PEPPY) {
+        switch (gLaserStrength[0]) {
+            case LASERS_UNK_3:
+                actor->damage = 12;
+                break;
+            case LASERS_MAX:
+                actor->damage = 15;
+                break;
+        }
+    } else if ((shot->sourceId < 4) && (gPlayer[shot->sourceId].form != FORM_LANDMASTER)) {
         switch (gLaserStrength[shot->sourceId]) {
             case LASERS_TWIN:
                 actor->damage = 12;
@@ -1109,11 +1120,22 @@ void PlayerShot_DrawLaser(PlayerShot* shot) {
             width = 2.0f;
             length = 10.0f;
         }
-        if ((gLaserStrength[0] > LASERS_SINGLE) && (shot->unk_58 == 0)) {
+        // this block seems to be responsible for drawing twin lasers
+        if ((gLaserStrength[0] > LASERS_SINGLE) && ((shot->unk_58 == 0) || (gLaserStrength[0] >= LASERS_UNK_3 && (shot->sourceId > NPC_SHOT_ID &&
+                                     shot->sourceId <= NPC_SHOT_ID + AI360_PEPPY)))) {
             switch (gLaserStrength[0]) {
                 case LASERS_TWIN:
                     break;
                 case LASERS_HYPER:
+                case LASERS_UNK_3:
+                    // fox's laser needs to be blue but everyone elses will be green
+                    if (shot->sourceId > NPC_SHOT_ID && shot->sourceId <= NPC_SHOT_ID + AI360_PEPPY) {
+                        break;
+                    }
+                    dList = D_101AD20;
+                    break;
+                case LASERS_MAX:
+                    // everyone's laser is blue
                     dList = D_101AD20;
                     break;
             }

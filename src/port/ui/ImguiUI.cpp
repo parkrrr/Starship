@@ -489,7 +489,7 @@ void DrawEnhancementsMenu() {
             });
             UIWidgets::CVarCheckbox("Use red radio backgrounds for enemies.", "gEnemyRedRadio");
             UIWidgets::CVarSliderInt("Cockpit Glass Opacity: %d", "gCockpitOpacity", 0, 255, 120);
-            
+            UIWidgets::CVarCheckbox("Upgradable ally lasers", "gAllyHyperLasers");
 
             ImGui::EndMenu();
         }

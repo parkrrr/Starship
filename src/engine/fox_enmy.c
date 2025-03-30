@@ -2226,7 +2226,13 @@ void ItemPickup_Update(Item* this) {
 
                     gLaserStrength[this->playerNum]++;
                     if (gLaserStrength[this->playerNum] > LASERS_HYPER) {
-                        gLaserStrength[this->playerNum] = LASERS_HYPER;
+                        if (!gVersusMode && CVarGetInteger("gAllyHyperLasers", 0) == 1) {
+                            if (gLaserStrength[this->playerNum] > LASERS_MAX) {
+                                gLaserStrength[this->playerNum] = LASERS_MAX;
+                            }
+                        } else {
+                            gLaserStrength[this->playerNum] = LASERS_HYPER;
+                        }
                     }
 
                     Object_PlayerSfx(gPlayer[this->playerNum].sfxSource, NA_SE_TWIN_LASER_GET, this->playerNum);
