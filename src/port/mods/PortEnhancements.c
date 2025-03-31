@@ -132,7 +132,12 @@ void OnDisplayUpdatePost(IEvent* event) {
         if ((gGameState != GSTATE_PLAY) || (gPlayState <= PLAY_INIT)) {
             return;
         }
-        gLaserStrength[0] = LASERS_HYPER;
+
+        if (CVarGetInteger("gAllyHyperLasers", 0) == 1) {
+            gLaserStrength[0] = LASERS_MAX;
+        } else {
+            gLaserStrength[0] = LASERS_HYPER;
+        }
     }
 
     if (CVarGetInteger("gScoreEditor", 0) == 1) {
