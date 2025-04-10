@@ -315,7 +315,7 @@ void GameEngine::Destroy() {
 #endif
 }
 
-void GameEngine::StartFrame() {
+void GameEngine::StartFrame() const {
     using Ship::KbScancode;
     const int32_t dwScancode = this->context->GetWindow()->GetLastScancode();
     this->context->GetWindow()->SetLastScancode(-1);
