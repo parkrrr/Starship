@@ -315,30 +315,25 @@ void GameEngine::Destroy() {
 #endif
 }
 
-std::unordered_set<int32_t> mActiveKeys;
 bool mResetting;
 
 void GameEngine::StartFrame() {
     using Ship::KbScancode;
+    const int32_t dwScancode = this->context->GetWindow()->GetLastScancode();
+    this->context->GetWindow()->SetLastScancode(-1);
 
-    const uint32_t dwScancode = this->context->GetWindow()->GetLastScancode();
-
-    if (dwScancode == -1) {
-        mActiveKeys.clear();
-    } else {
-        mActiveKeys.insert(dwScancode);
-    }
-
-    if (mActiveKeys.empty()) {
-        return;
-    }
-
-    if (mActiveKeys.contains(KbScancode::LUS_KB_TAB)) {
-        // Toggle HD Assets
-        CVarSetInteger("gEnhancements.Mods.AlternateAssets", !CVarGetInteger("gEnhancements.Mods.AlternateAssets", 0));
-    } else if (mActiveKeys.contains(KbScancode::LUS_KB_CONTROL) && mActiveKeys.contains(KbScancode::LUS_KB_R)) {
-        // Reset
-        mResetting = true;
+    switch (dwScancode) {
+        case KbScancode::LUS_KB_TAB: {
+            // Toggle HD Assets
+            CVarSetInteger("gEnhancements.Mods.AlternateAssets", !CVarGetInteger("gEnhancements.Mods.AlternateAssets", 0));
+            break;
+        }
+        case KbScancode::LUS_KB_F4: {
+            mResetting = true;
+            break;
+        }
+        default:
+            break;
     }
 }
 
