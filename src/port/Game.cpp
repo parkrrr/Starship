@@ -21,6 +21,13 @@ void Graphics_PushFrame(Gfx* data) {
 extern "C" void Timer_Update();
 
 void push_frame() {
+    if (GameEngine::Instance->IsResetting()) {
+        GameEngine::Instance->ClearReset();
+        Lib_FillScreen(1);
+        Main_Initialize();
+        Main_ThreadEntry(NULL);
+    }
+
     Graphics_ThreadUpdate();
     GameEngine::StartAudioFrame();
     GameEngine::Instance->StartFrame();

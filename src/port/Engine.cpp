@@ -316,6 +316,7 @@ void GameEngine::Destroy() {
 }
 
 std::unordered_set<int32_t> mActiveKeys;
+bool mResetting;
 
 void GameEngine::StartFrame() {
     using Ship::KbScancode;
@@ -337,7 +338,16 @@ void GameEngine::StartFrame() {
         CVarSetInteger("gEnhancements.Mods.AlternateAssets", !CVarGetInteger("gEnhancements.Mods.AlternateAssets", 0));
     } else if (mActiveKeys.contains(KbScancode::LUS_KB_CONTROL) && mActiveKeys.contains(KbScancode::LUS_KB_R)) {
         // Reset
+        mResetting = true;
     }
+}
+
+bool GameEngine::IsResetting() const {
+    return mResetting;
+}
+
+void GameEngine::ClearReset() {
+    mResetting = false;
 }
 
 #if 0
