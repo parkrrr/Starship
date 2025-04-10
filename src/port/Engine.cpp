@@ -315,8 +315,6 @@ void GameEngine::Destroy() {
 #endif
 }
 
-bool mResetting;
-
 void GameEngine::StartFrame() {
     using Ship::KbScancode;
     const int32_t dwScancode = this->context->GetWindow()->GetLastScancode();
@@ -329,20 +327,12 @@ void GameEngine::StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F4: {
-            mResetting = true;
+            gNextGameState = GSTATE_BOOT;
             break;
         }
         default:
             break;
     }
-}
-
-bool GameEngine::IsResetting() const {
-    return mResetting;
-}
-
-void GameEngine::ClearReset() {
-    mResetting = false;
 }
 
 #if 0

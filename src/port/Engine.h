@@ -29,9 +29,7 @@ class GameEngine {
     std::shared_ptr<Ship::Context> context;
 
     GameEngine();
-    void StartFrame();
-    bool IsResetting() const;
-    void ClearReset();
+    void StartFrame() const;
     static bool GenAssetFile(bool exitOnFail = true);
     static void Create();
     static void HandleAudioThread();
