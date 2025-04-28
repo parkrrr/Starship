@@ -6307,6 +6307,46 @@ void Camera_UpdateCockpitOnRails(Player* player, s32 arg1) {
     gCsCamAtY = player->pos.y + player->yBob + sp40.y;
     gCsCamAtZ = player->trueZpos + gPathProgress + sp40.z;
     Math_SmoothStepToF(&player->cam.eye.x, gCsCamEyeX, player->unk_014, 100.0f, 0.0f);
+    Math_SmoothStepToF(&player->cam.eye.y, gCsCamEyeY, 1.0f, 100.0f, 0.0f);
+    Math_SmoothStepToF(&player->cam.eye.z, gCsCamEyeZ, player->unk_014, 50.0f, 0.0f);
+    Math_SmoothStepToF(&player->cam.at.x, gCsCamAtX, player->unk_014, 100.0f, 0.0f);
+    Math_SmoothStepToF(&player->cam.at.y, gCsCamAtY, player->unk_014, 100.0f, 0.0f);
+    Math_SmoothStepToF(&player->cam.at.z, gCsCamAtZ, player->unk_014, 100.0f, 0.0f);
+    Math_SmoothStepToF(&player->unk_014, 1.0f, 1.0f, 0.05f, 0);
+    player->camRoll = -(player->bankAngle + player->rockAngle);
+    if (arg1 != 0) {
+        player->cam.eye.x = gCsCamEyeX;
+        player->cam.eye.y = gCsCamEyeY;
+        player->cam.eye.z = gCsCamEyeZ;
+        player->cam.at.x = gCsCamAtX;
+        player->cam.at.y = gCsCamAtY;
+        player->cam.at.z = gCsCamAtZ;
+    }
+}
+
+// identical to Camera_UpdateCockpitOnRails
+void Camera_UpdateCockpit360(Player* player, s32 arg1) {
+    Vec3f sp4C;
+    Vec3f sp40;
+    s32 pad;
+    s32 pad2;
+    s32 pad3;
+
+    Matrix_RotateY(gCalcMatrix, (player->rot.y + player->damageShake) * M_DTOR * 0.75f, MTXF_NEW);
+    Matrix_RotateX(gCalcMatrix, (player->rot.x + player->damageShake) * M_DTOR * 0.75f, MTXF_APPLY);
+    sp4C.x = 0;
+    sp4C.y = 0;
+    sp4C.z = -1000.0f;
+
+    Matrix_MultVec3f(gCalcMatrix, &sp4C, &sp40);
+
+    gCsCamEyeX = player->pos.x;
+    gCsCamEyeY = player->pos.y + player->yBob;
+    gCsCamEyeZ = player->trueZpos + gPathProgress;
+    gCsCamAtX = player->pos.x + sp40.x;
+    gCsCamAtY = player->pos.y + player->yBob + sp40.y;
+    gCsCamAtZ = player->trueZpos + gPathProgress + sp40.z;
+    Math_SmoothStepToF(&player->cam.eye.x, gCsCamEyeX, player->unk_014, 100.0f, 0.0f);
     Math_SmoothStepToF(&player->cam.eye.y, gCsCamEyeY, player->unk_014, 100.0f, 0.0f);
     Math_SmoothStepToF(&player->cam.eye.z, gCsCamEyeZ, player->unk_014, 50.0f, 0.0f);
     Math_SmoothStepToF(&player->cam.at.x, gCsCamAtX, player->unk_014, 100.0f, 0.0f);
@@ -6681,7 +6721,16 @@ void Camera_Update(Player* player) {
                     break;
 
                 case LEVELMODE_ALL_RANGE:
-                    Camera_Update360(player, false);
+                    if (CVarGetInteger("gCockpit360", 0) == 1) {
+                        if (!player->alternateView) {
+                            Camera_Update360(player, false);
+                        } else {
+                            Camera_UpdateCockpit360(player, false);
+                        }
+                    }
+                    else {
+                        Camera_Update360(player, false);
+                    }
                     break;
 
                 case LEVELMODE_TURRET:

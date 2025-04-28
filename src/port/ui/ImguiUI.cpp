@@ -458,6 +458,9 @@ void DrawEnhancementsMenu() {
             });
             UIWidgets::CVarCheckbox("Use red radio backgrounds for enemies.", "gEnemyRedRadio");
             UIWidgets::CVarSliderInt("Cockpit Glass Opacity: %d", "gCockpitOpacity", 0, 255, 120);
+            UIWidgets::CVarCheckbox("Cockpit view in all range mode.", "gCockpit360", {
+                .tooltip = "Use cockpit view instead of further camera in all range mode",
+            });
             
 
             ImGui::EndMenu();

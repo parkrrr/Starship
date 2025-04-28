@@ -468,6 +468,7 @@ void Player_UpdateArwingRoll(Player*);
 void Player_ArwingBoost(Player*);
 void Camera_UpdateArwingOnRails(Player*);
 void Camera_UpdateCockpitOnRails(Player*, s32);
+void Camera_UpdateCockpit360(Player*, s32);
 void Camera_FollowPlayer(Player*, s32 , bool);
 void Camera_UpdateArwing360(Player*, bool);
 void Camera_UpdateTank360(Player*, s32 );

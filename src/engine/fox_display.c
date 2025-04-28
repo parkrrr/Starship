@@ -728,7 +728,7 @@ void Display_Arwing(Player* player, s32 reflectY) {
         Matrix_MultVec3f(gGfxMatrix, &sp4C, &D_display_801613E0[1]);
     }
 
-    if (player->alternateView && (gLevelMode == LEVELMODE_ON_RAILS) &&
+    if (player->alternateView && (CVarGetInteger("gCockpit360", 0) == 1 || gLevelMode == LEVELMODE_ON_RAILS) &&
         (fabsf(player->trueZpos + gPathProgress - player->cam.eye.z) < 10.0f)) {
         if (reflectY == 0) {
             sDrawCockpit = true;
@@ -1822,7 +1822,8 @@ void Display_Update(void) {
     Lights_SetOneLight(&gMasterDisp, gLight1x, gLight1y, gLight1z, gLight1R, gLight1G, gLight1B, gAmbientR, gAmbientG,
                        gAmbientB);
 
-    if (gLevelMode == LEVELMODE_ON_RAILS) {
+    bool cockpit360 = (CVarGetInteger("gCockpit360", 0) == 1) && camPlayer->alternateView;
+    if (cockpit360 || gLevelMode == LEVELMODE_ON_RAILS) {
         Matrix_RotateY(gCalcMatrix, camPlayer->yRot_114 * M_DTOR, MTXF_NEW);
         Matrix_RotateX(gCalcMatrix, camPlayer->xRot_120 * M_DTOR, MTXF_APPLY);
 
