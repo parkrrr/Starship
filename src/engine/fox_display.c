@@ -1022,7 +1022,7 @@ void Display_ArwingLaserCharge(Player* player) {
     if (gChargeTimers[player->num] > 10) {
         RCP_SetupDL(&gMasterDisp, SETUPDL_67);
         Matrix_Copy(gCalcMatrix, &D_display_80161418[player->num]);
-        if (player->alternateView && (gLevelMode == LEVELMODE_ON_RAILS)) {
+        if (player->alternateView && (CVarGetInteger("gCockpit360", 0) == 1 || gLevelMode == LEVELMODE_ON_RAILS)) {
             Matrix_MultVec3f(gCalcMatrix, &spB8, &sp94);
         } else {
             Matrix_MultVec3f(gCalcMatrix, &spC4, &sp94);
@@ -1036,7 +1036,7 @@ void Display_ArwingLaserCharge(Player* player) {
         Matrix_Scale(gGfxMatrix, sp80, sp80, 1.0f, MTXF_APPLY);
         Matrix_Push(&gGfxMatrix);
 
-        if (player->alternateView && (gLevelMode == LEVELMODE_ON_RAILS)) {
+        if (player->alternateView && (CVarGetInteger("gCockpit360", 0) == 1 || gLevelMode == LEVELMODE_ON_RAILS)) {
             Matrix_Scale(gGfxMatrix, 3.0f, 3.0f, 3.0f, MTXF_APPLY);
         } else {
             Matrix_Scale(gGfxMatrix, 10.0f, 10.0f, 10.0f, MTXF_APPLY);
@@ -1071,7 +1071,7 @@ void Display_ArwingLaserCharge(Player* player) {
         gSPDisplayList(gMasterDisp++, aStarDL);
         Matrix_Pop(&gGfxMatrix);
 
-        if (player->alternateView && (gLevelMode == LEVELMODE_ON_RAILS)) {
+        if (player->alternateView && (CVarGetInteger("gCockpit360", 0) == 1 || gLevelMode == LEVELMODE_ON_RAILS)) {
             Matrix_Scale(gGfxMatrix, 0.3f, 0.3f, 0.3f, MTXF_APPLY);
         }
 
@@ -1100,7 +1100,8 @@ void Display_ArwingLaserCharge(Player* player) {
             case LASERS_SINGLE:
                 gDPSetPrimColor(gMasterDisp++, 0x00, 0x00, 192, 255, 192, 128);
                 gDPSetEnvColor(gMasterDisp++, 64, 255, 64, 128);
-                if (player->alternateView && (gLevelMode == LEVELMODE_ON_RAILS)) {
+                if (player->alternateView &&
+                    (CVarGetInteger("gCockpit360", 0) == 1 || gLevelMode == LEVELMODE_ON_RAILS)) {
                     Matrix_MultVec3f(gCalcMatrix, &spB8, &sp94);
                 } else {
                     Matrix_MultVec3f(gCalcMatrix, &spC4, &sp94);
