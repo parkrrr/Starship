@@ -6725,7 +6725,7 @@ void Camera_Update(Player* player) {
                         if (!player->alternateView) {
                             Camera_Update360(player, false);
                         } else {
-                            Camera_UpdateCockpit360(player, false);
+                            Camera_UpdateCockpit360(player, true);
                         }
                     }
                     else {
